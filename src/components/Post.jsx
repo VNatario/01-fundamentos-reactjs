@@ -1,4 +1,4 @@
-import { format, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow, set } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 
 import { useState } from "react";
@@ -41,6 +41,14 @@ export function Post({ author, publishedAt, content }) {
 
   function handleNewCommentChange() {
     setNewCommentText(event.target.value);
+  }
+
+  function deleteComment(commentToDelete) {
+    const commentsWithoutdDeletedOne = comments.filter((comment) => {
+      return comment !== commentToDelete;
+    });
+
+    setComments(commentsWithoutdDeletedOne);
   }
 
   return (
@@ -91,7 +99,13 @@ export function Post({ author, publishedAt, content }) {
 
       <div className={styles.commentList}>
         {comments.map((comment) => {
-          return <Comment content={comment} key={comment} />;
+          return (
+            <Comment
+              content={comment}
+              key={comment}
+              onDeleteComment={deleteComment}
+            />
+          );
         })}
       </div>
     </article>
